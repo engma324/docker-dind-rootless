@@ -1,10 +1,13 @@
 # docker-dind-rootless
-Rootless docker in docker with lxc-user-nic as network stack.
+Rootless docker in docker with lxc-user-nic as the network stack.
 
 ## Usage
+dockerd with no TCP ports and unix socket shared on a volume:
 ```
-$ docker run -d --privileged --net=host \
-        -v dind:/home/rootless/sock \
-        engma324/docker-dind-rootless
+$ docker run -d --name docker-rootless --privileged \
+        -v dind-socket:/home/rootless/sock \
+        engma324/docker-dind-rootless \
+        dockerd --experimental --host=unix:///home/rootless/sock/docker.sock
 ```
-By default, dockerd will not listen on any TCP socket. and the UNIX socket is created as /home/rootless/sock/docker.sock.
+
+For TCP with TLS usage refer to the official docker repo.
