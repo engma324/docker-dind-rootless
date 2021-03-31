@@ -3,7 +3,8 @@ FROM docker:20.10-dind-rootless
 USER root
 
 RUN apk add --no-cache lxc iptables dnsmasq su-exec \
-  && apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing fuse-overlayfs \
+  && wget -q -O /usr/bin/fuse-overlayfs "https://github.com/containers/fuse-overlayfs/releases/download/v1.5.0/fuse-overlayfs-x86_64" \
+  && chmod +x /usr/bin/fuse-overlayfs \
   && echo "rootless veth lxcbr0 50" > /etc/lxc/lxc-usernet
 
 ENV DOCKERD_ROOTLESS_ROOTLESSKIT_NET lxc-user-nic
